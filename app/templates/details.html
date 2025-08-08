@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Extension Details{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h1 class="display-6 fw-bold mb-4 text-primary">Details for ID {{ detail.id }}</h1>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <strong>Timestamp:</strong> {{ detail.timestamp }}
+            </div>
+            <div class="col-md-6">
+                <strong>Email Address:</strong> {{ detail.email_address }}
+            </div>
+            <div class="col-md-6">
+                <strong>Queue Name:</strong> {{ detail.queue_name }}
+            </div>
+            <div class="col-md-6">
+                <strong>Extension ID:</strong> {{ detail.extension_id }}
+            </div>
+            <div class="col-md-6">
+                <strong>Extension Title:</strong> {{ detail.extension_title }}
+            </div>
+            <div class="col-md-6">
+                <strong>Extension Functionality:</strong> {{ detail.extension_functionality }}
+            </div>
+            <div class="col-md-6">
+                <strong>Revision ID:</strong> {{ detail.revision_id }}
+            </div>
+            <div class="col-md-6">
+                <strong>DCR Link:</strong> {{ detail.dcr_link }}
+            </div>
+            <div class="col-md-6">
+                <strong>Change in Verdict:</strong> {{ detail.change_in_verdict }}
+            </div>
+            <div class="col-md-6">
+                <strong>Score Logs Triggered:</strong> {{ detail.score_logs_triggered }}
+            </div>
+            <div class="col-md-6">
+                <strong>Sensitive Permissions Requested:</strong> {{ detail.sensitive_permissions_requested }}
+            </div>
+            <div class="col-md-6">
+                <strong>External Calls / Unsafe Eval:</strong> {{ detail.external_calls_unsafe_eval }}
+            </div>
+            <div class="col-md-6">
+                <strong>Content Scripts:</strong> {{ detail.content_scripts }}
+            </div>
+            <div class="col-md-6">
+                <strong>Web Sockets:</strong> {{ detail.web_sockets }}
+            </div>
+            <div class="col-md-6">
+                <strong>Action Taken:</strong> {{ detail.action_taken }}
+            </div>
+            <div class="col-md-6">
+                <strong>Escalation Approved By:</strong> {{ detail.escalation_approved_by }}
+            </div>
+            <div class="col-md-6">
+                <strong>Reason for Escalation:</strong> {{ detail.reason_for_escalation }}
+            </div>
+            <div class="col-md-6">
+                <strong>L0 Verdict:</strong> {{ detail.l0_verdict }}
+            </div>
+            <div class="col-md-6">
+                <strong>Final Verdict:</strong> {{ detail.verdict }}
+            </div>
+            <div class="col-md-6">
+                <strong>Team Lead:</strong> {{ detail.teamlead }}
+            </div>
+            <div class="col-md-6">
+                <strong>Code Comparison:</strong> {{ detail.code_comparison }}
+            </div>
+            <div class="col-md-6">
+                <strong>Web APIs:</strong> {{ detail.web_APIs }}
+            </div>
+            <div class="col-md-6">
+                <strong>Escalation Approved by L1:</strong> {{ detail.Escalation_Approved_by_L1 }}
+            </div>
+            <div class="col-md-6">
+                <strong>Escalation Reason Sub-Category:</strong> {{ detail.Escalation_Reason_Sub_category }}
+            </div>
+        </div>
+
+        <a href="/dashboard?show=data" class="btn btn-secondary mt-4">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}
