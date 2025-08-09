@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Team Lead: {{ teamlead }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h2 class="fw-bold text-dark mb-4">Details for Team Lead: {{ teamlead }}</h2>
+
+  {% if selected_lead %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle">
+        <thead class="table-light">
+          <tr>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Email Address</th>
+            <th scope="col">DCR Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in selected_lead %}
+            <tr>
+              <td>{{ row.timestamp }}</td>
+              <td>{{ row.email_address }}</td>
+              <td>
+                <a href="{{ row.dcr_link }}" class="text-primary" target="_blank">
+                  {{ row.dcr_link }}
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-warning">No data found for this team lead.</div>
+  {% endif %}
+
+</div>
+{% endblock %}

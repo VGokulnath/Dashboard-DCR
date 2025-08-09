@@ -4,16 +4,68 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}Dashboard{% endblock %}</title>
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="bg-light">
-    <!-- Main content block for child templates to fill -->
-    <div class="container py-5">
-        {% block content %}{% endblock %}
-    </div>
 
-    <!-- Bootstrap JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm justify-content-center">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-semibold" href="/dashboard">MyApp</a>
+
+        <!-- Dashboard-specific buttons -->
+        {% if request.url.path.startswith("/dashboard") %}
+        <div class="d-flex gap-2 ms-3">
+            <!-- Add to DB -->
+            <form action="/import-sheet" method="post">
+                <button type="submit" class="btn btn-primary btn-sm">Add to DB</button>
+            </form>
+            <!-- Get Data -->
+            <form action="/dashboard" method="get">
+                <input type="hidden" name="show" value="data" />
+                <button type="submit" class="btn btn-success btn-sm">Get Data</button>
+            </form>
+            <!-- Search Extension -->
+            <form action="/dashboard/search-extension" method="get" class="d-flex">
+                <input type="text" name="extension_id" class="form-control form-control-sm me-2" placeholder="Extension ID" />
+                <button type="submit" class="btn btn-outline-light btn-sm">Search</button>
+            </form>
+            <!-- Team Lead Dropdown -->
+            <form action="/dashboard/search-lead" method="get">
+                <select name="teamlead" class="form-select form-select-sm w-auto" onchange="this.form.submit()">
+                    <option value="" disabled selected>Select a Lead</option>
+                    {% for lead in leads %}
+                    <option value="{{ lead[0] }}">{{ lead[0] }}</option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+        {% endif %}
+
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                {% if request.cookies.get("access_token") %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main container -->
+<div class="container py-4">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

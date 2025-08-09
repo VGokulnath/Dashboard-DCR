@@ -10,3 +10,4 @@ def get_sheet_data(sheet_name: str):
     worksheet = sheet.get_worksheet(0)  # First tab
     data = worksheet.get_all_records()  # List of dicts
     return data
+
