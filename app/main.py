@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request,Depends,Form,HTTPException
+from fastapi import FastAPI, Request,Depends,Form,HTTPException,Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse,RedirectResponse
@@ -20,6 +20,7 @@ ALLOWED_EMAILS = ["admin@example.com", "manager@example.com"]
 
 
 app = FastAPI()
+#Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -60,9 +61,9 @@ def login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request, "error": ""})
 
 @app.post("/login", response_class=HTMLResponse)
-def login(email: str = Form(...)):
+def login(request: Request,email: str = Form(...)):
     if email not in ALLOWED_EMAILS:
-        return templates.TemplateResponse("login.html", {"request": {}, "error": "Access denied!"})
+        return templates.TemplateResponse("login.html", {"request": request, "error": "Access denied!"})
 
     access_token = create_access_token(data={"sub": email}, expires_delta=timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     response = RedirectResponse(url="/dashboard", status_code=303)
@@ -157,13 +158,32 @@ def search(extension_id:str, request: Request, db: Session = Depends(get_db)):
 
 
 @app.get('/dashboard/search-lead', response_class=HTMLResponse)
-def search_by_lead(teamlead: str, request: Request = None, db: Session = Depends(get_db)):
+def search_by_lead(request: Request,teamlead: str,period: str=Query(None), db: Session = Depends(get_db)):
     selected_lead = []
-    if teamlead:
-        selected_lead = db.query(SheetData).order_by(SheetData.extension_id).filter(SheetData.teamlead == teamlead).all()
-        return templates.TemplateResponse("selected_lead_details.html",{
-            "request": request,
-            "selected_lead": selected_lead,
-            "teamlead": teamlead
-        })
+
+
+    now = datetime.now()
+    start_date = None
+    if period:
+
+        if period == "daily":
+            start_date = now.replace(hour=0,minute=0,second=0,microsecond=0)
+        elif period == "weekly":
+            start_date = now - timedelta(days=7)
+        elif period == "monthly":
+            start_date = now - timedelta(days=30)
+        
+    query = db.query(SheetData).filter(SheetData.teamlead == teamlead)
+
+    if start_date:
+        query = query.filter(SheetData.timestamp>=start_date)
+
+    selected_lead = query.order_by(SheetData.extension_id).all()
+    return templates.TemplateResponse("selected_lead_details.html",{
+        "request": request,
+        "selected_lead": selected_lead,
+        "teamlead": teamlead,
+        "period":period
+    })
     return RedirectResponse(url="/dashboard", status_code=303)
+

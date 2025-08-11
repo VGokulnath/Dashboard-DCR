@@ -1,11 +1,11 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,DateTime
 from .db import Base
 
 class SheetData(Base):
     __tablename__ = "responses"
 
     id = Column(Integer, primary_key=True, index=True)
-    timestamp = Column(String)
+    timestamp = Column(DateTime)
     email_address = Column(String)
     queue_name = Column(String)
     extension_id = Column(String)

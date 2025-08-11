@@ -7,6 +7,20 @@
 
   <h2 class="fw-bold text-dark mb-4">Details for Team Lead: {{ teamlead }}</h2>
 
+  <form method="get" action="/dashboard/search-lead" class="mb-3">
+    <input type="hidden" name="teamlead" value="{{ teamlead }}">
+    <div class="row g-2 align-items-center">
+      <div class="col-auto">
+        <select name="period" class="form-select" onchange="this.form.submit()">
+          <option value="">Select Period</option>
+          <option value="daily" {% if period == 'daily' %}selected{% endif %}>Daily</option>
+          <option value="weekly" {% if period == 'weekly' %}selected{% endif %}>Weekly</option>
+          <option value="monthly" {% if period == 'monthly' %}selected{% endif %}>Monthly</option>
+        </select>
+      </div>
+    </div>
+  </form>
+
   {% if selected_lead %}
     <div class="table-responsive">
       <table class="table table-bordered table-striped align-middle">
